@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="">
+        <input type="text" id="createValue">
+        <button onclick="onCreate()">Add</button>
+    </label>
+    
+    <ul id="list">
+        <!-- <li><input type="checkbox"> 리스트</li> -->
+    </ul>
+    
+    <script>
+        const state = {
+            todos: ['리스트']
+        };
+
+        const onRemove = (index) => {
+            state.todos = state.todos.filter((x, i) => i !== index);
+            listRender();
+        }
+
+        const onCreate = () => {
+            const el = document.getElementById('createValue');
+            state.todos.push(el.value);
+            el.value = '';
+            listRender();
+        }
+
+        const listRender = () => {
+            const list = document.getElementById('list');
+            const temp = document.createDocumentFragment();
+
+            list.innerHTML = '';
+
+            for (const [index, el] of state.todos.entries()) {
+                const li = document.createElement('li');
+
+                const button = document.createElement('button');
+                button.textContent = 'remove';
+                button.onclick = () => onRemove(index);
+                
+                li.textContent = el;
+                li.appendChild(button);
+
+                temp.appendChild(li);
+            }
+
+            list.appendChild(temp);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => listRender());
+    </script>
+</body>
+</html>

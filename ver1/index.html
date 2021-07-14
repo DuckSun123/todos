@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="input">
+    <button id="add">add</button>
+    <ul id="list"></ul>
+    <script>
+        // todolist 생성하는 함수
+        function init() {
+            const input = document.getElementById('input');
+            const addBtn = document.getElementById('add');
+
+            addBtn.addEventListener('click', () => {
+                // 버튼을 클릭 했을 때 아래의 함수를 실행한다
+                if (input.value !== '') {
+                    // input의 배열이 ''와 같지 않으면 아래꺼 실행
+                    // 문자를 작성하는거 같음
+                    const list = document.getElementById('list');
+                    const tempParent = document.createDocumentFragment();
+                   
+                    for (const [index, li] of Array.from(list.children).entries()) {
+                        li.setAttribute('id', index);
+                        tempParent.appendChild(li);
+                    }
+                    // 너무 어려움
+                
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'remove';
+                    // removeBtn의 이름은 remove
+                    removeBtn.onclick = (e) => removeItem(e);
+                    // 버튼을 눌렀을 때 삭제하는 콜백함수 실행
+
+                    const created = document.createElement('li');
+                    created.setAttribute('id', list.children.length - 1);
+                    created.textContent = input.value;
+                    //
+
+                    created.appendChild(removeBtn);
+                    // removeBtn 생성
+                    tempParent.appendChild(created);
+
+                    list.innerHTML = '';
+                    list.appendChild(tempParent);
+                    input.value = '';
+                }
+            });
+
+            //todolist 제거하는 함수
+            function removeItem(e) {
+                const list = document.getElementById('list');
+                const id = e.target.parentNode.getAttribute('id');
+                const tempParent = document.createDocumentFragment();
+
+                const filterdChildren = Array
+                    .from(list.children)
+                    .filter((x, i) => +x.getAttribute('id') !== +id)
+                    .entries();
+
+                for (const [index, li] of filterdChildren) {
+                    li.setAttribute('id', index);
+                    tempParent.appendChild(li);
+                }
+
+                list.innerHTML = '';
+                list.appendChild(tempParent);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        
+
+
+    </script>
+</body>
+
+</html>
